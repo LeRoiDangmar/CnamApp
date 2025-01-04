@@ -9,10 +9,10 @@ RUN apt-get update && apt-get install -y \
  && a2enmod rewrite headers \
  && composer install --prefer-dist \
  && composer dump-autoload --optimize \
- && composer update
+ && composer update \
  && a2enmod proxy \
  && a2enmod proxy_http
- 
+
 COPY ./deploy/my-proxy.conf /etc/apache2/sites-available/000-default.conf
 
 COPY ./deploy/ /var/www/html
