@@ -10,7 +10,7 @@ module.exports = app => {
     router.post("/login", utilisateur.login);
     router.post("/signup", utilisateur.signup);
     router.post("/delete", utilisateur.deluser);
-    router.get("/update", utilisateur.updateuser);
+    router.post("/update", utilisateur.updateuser);
     router.get("/getuser", checkJwt, utilisateur.getuser);
   
     app.use('/api/utilisateur', router);

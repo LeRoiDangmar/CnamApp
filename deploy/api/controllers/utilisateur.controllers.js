@@ -182,11 +182,6 @@ exports.updateuser = async (req, res) => {
       updateData.adresse = req.body.adresse;
     }
 
-    if (req.body.password) {
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
-      updateData.password = hashedPassword;
-    }
 
     const [updatedRows] = await Utilisateurs.update(updateData, {
       where: { id: userId }
