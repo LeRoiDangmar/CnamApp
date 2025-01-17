@@ -138,17 +138,31 @@ exports.getuser = async (req, res) => {
   }
 };
 
-exports.deluser = async (req,res) => {
-  try{
-    const userId = jwtGetId(req.headers['authorization'])
-  }catch(error){
+exports.deluser = async (req, res) => {
+  try {
+    const userId = jwtGetId(req.headers['authorization']);
+
+    const deletedRows = await Utilisateurs.destroy({
+      where: { id: userId }
+    });
+
+    if (deletedRows === 0) {
+      return res.status(404).json({
+        message: "Utilisateur non trouvé."
+      });
+    }
+
+    res.status(200).json({
+      message: "Utilisateur supprimé avec succès."
+    });
+  } catch (error) {
     console.error("Error deleting user:", error);
-    
     res.status(500).json({
-      message: error.message || "An error occurred while deleting user.",
+      message: error.message || "Une erreur est survenue lors de la suppression de l'utilisateur."
     });
   }
-}
+};
+
 
 exports.updateuser = async (req, res) => {
   try {
@@ -217,7 +231,7 @@ function jwtGetId(authorizationHeader) {
 
   try {
     // Make sure you have set process.env.JWT_SECRET with your secret key
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, ACCESS_TOKEN_SECRET);
     
     // Assuming the payload has the property "id"
     if (!decoded.id) {
